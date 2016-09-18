@@ -3,7 +3,7 @@ package ru.kpfu.queue;
 import ru.kpfu.linkedlist.LinkedList;
 import ru.kpfu.list.Iterator;
 
-public class Queue<T> implements FirstInLastOut<T> {
+public class Queue<T> implements FirstInFirstOut<T> {
 
 	private LinkedList<T> list = new LinkedList<>();
 
