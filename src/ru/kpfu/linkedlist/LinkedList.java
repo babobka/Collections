@@ -120,10 +120,11 @@ public class LinkedList<T> implements List<T>, Cloneable {
 		return false;
 	}
 
-	public static String toString(LinkedList<?> list) {
+	@Override
+	public String toString() {
 		StringBuilder sb = new StringBuilder();
 		String separator = "";
-		Iterator<?> iterator = list.getIterator();
+		Iterator<T> iterator = this.getIterator();
 		while (iterator.hasNext()) {
 			sb.append(separator);
 			sb.append(iterator.next());

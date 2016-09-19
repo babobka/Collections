@@ -61,6 +61,7 @@ public class HashMapTest {
 		for (int i = 0; i < n; i++) {
 			map.put(i, "abc");
 		}
+		
 		assertEquals(map.getSize(), n);
 	}
 

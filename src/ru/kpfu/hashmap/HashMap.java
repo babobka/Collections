@@ -3,6 +3,7 @@ package ru.kpfu.hashmap;
 import ru.kpfu.linkedlist.LinkedList;
 import ru.kpfu.list.Iterator;
 import ru.kpfu.list.List;
+import ru.kpfu.map.Entry;
 import ru.kpfu.map.Map;
 
 public class HashMap<K, V> implements Map<K, V> {

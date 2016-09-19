@@ -1,4 +1,4 @@
-package ru.kpfu.hashmap;
+package ru.kpfu.map;
 
 public class Entry<K, V> {
 
@@ -27,5 +27,12 @@ public class Entry<K, V> {
 	public void setValue(V value) {
 		this.value = value;
 	}
+
+	@Override
+	public String toString() {
+		return "Entry [key=" + key + ", value=" + value + "]";
+	}
+	
+	
 
 }
