@@ -36,4 +36,9 @@ public class Queue<T> implements FirstInFirstOut<T> {
 		return list.hashCode();
 	}
 
+	@Override
+	public boolean isEmpty() {
+		return list.isEmpty();
+	}
+
 }

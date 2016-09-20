@@ -12,6 +12,8 @@ import ru.kpfu.list.Iterator;
 public class ArrayListTest {
 
 	private ArrayList<Integer> list;
+	
+	int n = 100000;
 
 	@Before
 	public void init() {
@@ -39,7 +41,7 @@ public class ArrayListTest {
 
 	@Test
 	public void testRemove() {
-		int n = 100;
+
 		for (int i = 0; i < n; i++) {
 			list.add(i);
 		}
@@ -64,7 +66,7 @@ public class ArrayListTest {
 
 	@Test
 	public void testIterator() {
-		int n = 100;
+	
 		for (int i = 0; i < n; i++) {
 			list.add(i);
 		}

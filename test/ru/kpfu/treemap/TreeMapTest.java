@@ -17,6 +17,8 @@ public class TreeMapTest {
 
 	private Map<Integer, String> map;
 
+	private int n = 100000;
+
 	@Before
 	public void init() {
 		map = new TreeMap<Integer, String>(new Comparator<Integer>() {
@@ -55,48 +57,72 @@ public class TreeMapTest {
 
 	@Test
 	public void testPutALot() {
-		int n = 100;
+
 		for (int i = 0; i < n; i++) {
-			map.put(i, "abc");
+			map.put((int) (Math.random() * n), "abc");
 		}
-		assertEquals(map.getSize(), n);
-		assertTrue(isListSorted(map.getKeys()));
+		assertTrue(map.getSize() <= n);
+		assertEquals(map.getSize(), map.getKeys().getSize());
+	}
+
+	@Test
+	public void testRemove() {
+
+		for (int i = 0; i < n; i++) {
+			map.put((int) (Math.random() * n), "abc");
+		}
+		List<Integer> keysList = map.getKeys();
+		Iterator<Integer> iterator = keysList.getIterator();
+		while (iterator.hasNext()) {
+			map.remove(iterator.next());
+		}
+		assertTrue(map.isEmpty());
+		assertEquals(map.getSize(), 0);
+		assertEquals(map.getKeys().getSize(), 0);
+
+	}
+
+	@Test
+	public void testClear() {
+
+		for (int i = 0; i < n; i++) {
+			map.put((int) (Math.random() * n), "abc");
+		}
+		map.clear();
+		assertTrue(map.isEmpty());
+		assertEquals(map.getSize(), 0);
+		assertEquals(map.getKeys().getSize(), map.getSize());
 	}
 
 	@Test
 	public void testGetKeys() {
-		int n = 1000;
+
 		for (int i = 0; i < n; i++) {
 			map.put((int) (Math.random() * n), "abc");
 		}
-		assertTrue(isListSorted(map.getKeys()));
+		assertEquals(map.getKeys().getSize(), map.getSize());
 	}
 
 	@Test
 	public void testContains() {
-		int n = 100;
-		for (int i = 0; i < n; i++) {
-			map.put(i, "abc");
-		}
-		for (int i = 0; i < n; i++) {
-			assertTrue(map.containsKey(i));
-		}
-	}
 
-	private boolean isListSorted(List<Integer> list) {
-		Iterator<Integer> iterator = list.getIterator();
-		Integer current, previous = null;
+		for (int i = 0; i < n; i++) {
+			map.put((int) (Math.random() * n), "abc");
+		}
+		List<Integer> keysList = map.getKeys();
+		Iterator<Integer> iterator = keysList.getIterator();
 		while (iterator.hasNext()) {
-			current = iterator.next();
-			if (previous != null) {
-				if (current < previous) {
-					return false;
-				}
-			}
-			previous = current;
-
+			assertTrue(map.containsKey(iterator.next()));
 		}
-		return true;
 	}
+
+	/*
+	 * private boolean isListSorted(List<Integer> list) { Iterator<Integer>
+	 * iterator = list.getIterator(); Integer current, previous = null; while
+	 * (iterator.hasNext()) { current = iterator.next(); if (previous != null) {
+	 * if (current < previous) { return false; } } previous = current;
+	 * 
+	 * } return true; }
+	 */
 
 }

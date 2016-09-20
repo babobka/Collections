@@ -174,4 +174,11 @@ public class HashMap<K, V> implements Map<K, V> {
 		return (k.hashCode() * 31) % n;
 	}
 
+	@Override
+	public void clear() {
+		collisionListArray = new LinkedList[MIN_SIZE];
+		size = 0;
+
+	}
+
 }

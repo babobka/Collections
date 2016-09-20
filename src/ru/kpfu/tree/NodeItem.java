@@ -6,11 +6,13 @@ public class NodeItem<K, V> {
 
 	private Entry<K, V> entry;
 
+	private NodeItem<K, V> parentNode;
+
 	private NodeItem<K, V> leftNode;
 
 	private NodeItem<K, V> rightNode;
 
-	public NodeItem(Entry<K, V> entry, NodeItem<K, V> leftNode, NodeItem<K, V> rightNode) {
+	public NodeItem(Entry<K, V> entry, NodeItem<K, V> parentNode, NodeItem<K, V> leftNode, NodeItem<K, V> rightNode) {
 		super();
 		this.entry = entry;
 		this.leftNode = leftNode;
@@ -45,4 +47,14 @@ public class NodeItem<K, V> {
 		return entry.toString();
 	}
 
+	public NodeItem<K, V> getParentNode() {
+		return parentNode;
+	}
+
+	public void setParentNode(NodeItem<K, V> parentNode) {
+		this.parentNode = parentNode;
+	}
+
+	
+	
 }

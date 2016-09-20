@@ -36,4 +36,10 @@ public class Stack<T> implements LastInFirstOut<T> {
 		return list.hashCode();
 	}
 
+	@Override
+	public boolean isEmpty() {
+		
+		return list.isEmpty();
+	}
+
 }

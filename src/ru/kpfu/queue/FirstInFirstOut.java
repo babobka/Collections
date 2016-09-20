@@ -9,5 +9,7 @@ public interface FirstInFirstOut<T> {
 	public T dequeue();
 	
 	public Iterator<T> getIterator();
+	
+	public boolean isEmpty();
 
 }

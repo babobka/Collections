@@ -9,5 +9,7 @@ public interface LastInFirstOut<T> {
 	public T pop();
 	
 	public Iterator<T> getIterator();
+	
+	public boolean isEmpty();
 
 }
