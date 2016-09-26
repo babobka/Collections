@@ -6,19 +6,19 @@ public class ArrayListIterator<T> implements Iterator<T> {
 
 	private int currentIndex;
 
-	private T[] array;
+	private Object[] array;
 
 	private int size;
 
-	public ArrayListIterator(T[] array, int currentIndex, int size) {
+	public ArrayListIterator(Object[] array2, int currentIndex, int size) {
 		this.currentIndex = currentIndex;
 		this.size = size;
-		this.array = array;
+		this.array = array2;
 	}
 
 	@Override
 	public T next() {
-		T value = array[currentIndex];
+		T value = (T)array[currentIndex];
 		currentIndex++;
 		return value;
 	}

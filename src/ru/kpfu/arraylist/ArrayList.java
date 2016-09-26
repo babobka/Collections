@@ -12,7 +12,7 @@ public class ArrayList<T> implements List<T>, Cloneable {
 
 	private static final double EXPAND_COEFFICIENT = 1.5;
 
-	private T[] array = (T[]) new Object[MIN_SIZE];
+	private Object[] array = new Object[MIN_SIZE];
 
 	private int size = 0;
 
@@ -38,7 +38,7 @@ public class ArrayList<T> implements List<T>, Cloneable {
 		if (i < 0 || i > size) {
 			throw new IllegalArgumentException("Index " + i + " is out of bounds");
 		}
-		return array[i];
+		return (T)array[i];
 	}
 
 	public Iterator<T> getIterator() {
@@ -53,7 +53,7 @@ public class ArrayList<T> implements List<T>, Cloneable {
 		if (size < this.size) {
 			throw new IllegalArgumentException("New size can not be lower than current size");
 		}
-		T[] newArray = (T[]) new Object[size];
+		Object[] newArray =  new Object[size];
 		for (int i = 0; i < this.size; i++) {
 			newArray[i] = array[i];
 		}
@@ -70,7 +70,7 @@ public class ArrayList<T> implements List<T>, Cloneable {
 
 	public void clear() {
 		this.size = 0;
-		this.array = (T[]) new Object[MIN_SIZE];
+		this.array = new Object[MIN_SIZE];
 	}
 
 	public String toString() {

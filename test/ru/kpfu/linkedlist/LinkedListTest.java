@@ -7,11 +7,14 @@ import org.junit.Test;
 
 import ru.kpfu.linkedlist.LinkedList;
 import ru.kpfu.list.Iterator;
+import ru.kpfu.list.List;
 
 public class LinkedListTest {
 
 	private LinkedList<Integer> list;
 
+	int n = 10000;
+	
 	@Before
 	public void init() {
 		list = new LinkedList<>();
@@ -35,10 +38,12 @@ public class LinkedListTest {
 		assertNotEquals(list.getFirst(), list.getLast());
 		assertTrue(list.getFirst().equals(first) && list.getLast().equals(last));
 	}
+	
+
 
 	@Test
 	public void testRemove() {
-		int n = 100;
+		
 		for (int i = 0; i < n; i++) {
 			list.add(i);
 		}
@@ -53,7 +58,7 @@ public class LinkedListTest {
 
 	@Test
 	public void testRemoveByIndex() {
-		int n = 100;
+		
 		for (int i = 0; i < n; i++) {
 			list.add(i);
 		}
@@ -78,7 +83,7 @@ public class LinkedListTest {
 
 	@Test
 	public void testIterator() {
-		int n = 10;
+
 		for (int i = 0; i < n; i++) {
 			list.addFirst(i);
 		}
