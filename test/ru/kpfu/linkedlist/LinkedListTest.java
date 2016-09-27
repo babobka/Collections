@@ -7,7 +7,6 @@ import org.junit.Test;
 
 import ru.kpfu.linkedlist.LinkedList;
 import ru.kpfu.list.Iterator;
-import ru.kpfu.list.List;
 
 public class LinkedListTest {
 

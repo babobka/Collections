@@ -34,11 +34,17 @@ public class ArrayList<T> implements List<T>, Cloneable {
 		size--;
 	}
 
+	public void set(int i, T value) {
+		if (i < size) {
+			array[i] = value;
+		}
+	}
+
 	public T get(int i) {
 		if (i < 0 || i > size) {
 			throw new IllegalArgumentException("Index " + i + " is out of bounds");
 		}
-		return (T)array[i];
+		return (T) array[i];
 	}
 
 	public Iterator<T> getIterator() {
@@ -53,7 +59,7 @@ public class ArrayList<T> implements List<T>, Cloneable {
 		if (size < this.size) {
 			throw new IllegalArgumentException("New size can not be lower than current size");
 		}
-		Object[] newArray =  new Object[size];
+		Object[] newArray = new Object[size];
 		for (int i = 0; i < this.size; i++) {
 			newArray[i] = array[i];
 		}

@@ -11,6 +11,8 @@ public class HashMapTest {
 
 	private Map<Integer, String> map;
 
+	int n=100000;
+	
 	@Before
 	public void init() {
 		map = new HashMap<>();
@@ -57,7 +59,6 @@ public class HashMapTest {
 
 	@Test
 	public void testPutALot() {
-		int n = 100;
 		for (int i = 0; i < n; i++) {
 			map.put(i, "abc");
 		}
@@ -67,7 +68,6 @@ public class HashMapTest {
 
 	@Test
 	public void testRemove() {
-		int n = 100;
 		for (int i = 0; i < n; i++) {
 			map.put(i, "abc");
 		}
@@ -83,7 +83,6 @@ public class HashMapTest {
 
 	@Test
 	public void testContains() {
-		int n = 100;
 		for (int i = 0; i < n; i++) {
 			map.put(i, "abc");
 		}
