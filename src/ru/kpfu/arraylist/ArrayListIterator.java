@@ -10,10 +10,10 @@ public class ArrayListIterator<T> implements Iterator<T> {
 
 	private int size;
 
-	public ArrayListIterator(Object[] array2, int currentIndex, int size) {
+	public ArrayListIterator(Object[] array, int currentIndex, int size) {
 		this.currentIndex = currentIndex;
 		this.size = size;
-		this.array = array2;
+		this.array = array;
 	}
 
 	@Override

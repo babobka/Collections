@@ -31,6 +31,7 @@ public class ArrayList<T> implements List<T>, Cloneable {
 		for (int j = i; j < size - 1; j++) {
 			array[j] = array[j + 1];
 		}
+		array[size - 1] = null;
 		size--;
 	}
 
