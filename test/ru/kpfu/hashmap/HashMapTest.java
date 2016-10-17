@@ -10,12 +10,16 @@ import ru.kpfu.map.Map;
 public class HashMapTest {
 
 	private Map<Integer, String> map;
+	private Map<String, String> collisionMap;
 
 	int n = 100000;
+
+	int collisions = 100;
 
 	@Before
 	public void init() {
 		map = new HashMap<>();
+		collisionMap = new HashMap<>();
 	}
 
 	@Test
@@ -44,16 +48,16 @@ public class HashMapTest {
 		String key2 = key1 + key1;
 		String value1 = "abc";
 		String value2 = "xyz";
-		Map<String, String> map = new HashMap<>();
-		map.put(key1, value1);
-		map.put(key2, value2);
-		assertEquals(map.getSize(), 2);
-		assertEquals(map.get(key1), value1);
-		assertEquals(map.get(key2), value2);
-		map.remove(key1);
-		assertEquals(map.getSize(), 1);
-		assertFalse(map.containsKey(key1));
-		assertTrue(map.containsKey(key2));
+
+		collisionMap.put(key1, value1);
+		collisionMap.put(key2, value2);
+		assertEquals(collisionMap.getSize(), 2);
+		assertEquals(collisionMap.get(key1), value1);
+		assertEquals(collisionMap.get(key2), value2);
+		collisionMap.remove(key1);
+		assertEquals(collisionMap.getSize(), 1);
+		assertFalse(collisionMap.containsKey(key1));
+		assertTrue(collisionMap.containsKey(key2));
 
 	}
 
@@ -64,6 +68,34 @@ public class HashMapTest {
 		}
 
 		assertEquals(map.getSize(), n);
+	}
+
+	@Test
+	public void testCollisionsPutALot() {
+		for (int i = 0; i < collisions; i++) {
+			collisionMap.put(generateCollisionString(i + 1), "abc");
+		}
+
+		assertEquals(collisionMap.getSize(), collisions);
+	}
+
+	@Test
+	public void testCollisionsRemoveALot() {
+		int nonCollisions = 10;
+		for (int i = 0; i < collisions; i++) {
+			collisionMap.put(generateCollisionString(i + 1), "abc");
+		}
+		for (int i = 0; i < nonCollisions; i++) {
+			collisionMap.put(String.valueOf(i), "abc");
+		}
+		
+		assertEquals(collisionMap.getSize(), collisions+nonCollisions);
+
+		for (int i = 0; i < collisions; i++) {
+			collisionMap.remove(generateCollisionString(i + 1));
+		}
+		assertEquals(collisionMap.getSize(), nonCollisions);
+
 	}
 
 	@Test
@@ -90,6 +122,14 @@ public class HashMapTest {
 		for (int i = 0; i < n; i++) {
 			assertTrue(map.containsKey(i));
 		}
+	}
+
+	private String generateCollisionString(int chars) {
+		StringBuilder sb = new StringBuilder();
+		for (int i = 0; i < chars; i++) {
+			sb.append(Character.toString((char) 0));
+		}
+		return sb.toString();
 	}
 
 }
