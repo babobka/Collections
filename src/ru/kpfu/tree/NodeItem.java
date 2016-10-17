@@ -17,6 +17,7 @@ public class NodeItem<K, V> {
 		this.entry = entry;
 		this.leftNode = leftNode;
 		this.rightNode = rightNode;
+		this.parentNode = parentNode;
 	}
 
 	public Entry<K, V> getEntry() {
@@ -55,6 +56,4 @@ public class NodeItem<K, V> {
 		this.parentNode = parentNode;
 	}
 
-	
-	
 }

@@ -5,10 +5,11 @@ import ru.kpfu.list.Iterator;
 import ru.kpfu.list.List;
 import ru.kpfu.map.Entry;
 import ru.kpfu.map.Map;
+import ru.kpfu.util.MathUtil;
 
 public class HashMap<K, V> implements Map<K, V> {
 
-	private static final int MIN_SIZE = 10;
+	private static final int MIN_SIZE = 11;
 
 	private static final double GROWTH_COEFFICIENT = 1.5D;
 
@@ -114,7 +115,7 @@ public class HashMap<K, V> implements Map<K, V> {
 
 	private void expandAndRehash() {
 		GenericArray<List<Entry<K, V>>> newCollisionListArray = new GenericArray<>(
-				(int) (collisionListArray.getSize() * GROWTH_COEFFICIENT));
+				MathUtil.getNextPrime((int) (collisionListArray.getSize() * GROWTH_COEFFICIENT)));
 		for (int i = 0; i < collisionListArray.getSize(); i++) {
 			if (collisionListArray.get(i) != null) {
 				List<Entry<K, V>> collisonList = collisionListArray.get(i);
@@ -171,7 +172,7 @@ public class HashMap<K, V> implements Map<K, V> {
 	}
 
 	private int hash(K k, int n) {
-		return (k.hashCode() * 31) % n;
+		return (k.hashCode()) % n;
 	}
 
 	@Override

@@ -24,7 +24,7 @@ public class TreeMap<K, V> implements Map<K, V> {
 
 	@Override
 	public void put(K key, V value) {
-		NodeItem<K, V> nodeToPut = new NodeItem<K, V>(new Entry<K, V>(key, value), null, null, null);
+		NodeItem<K, V> nodeToPut = new NodeItem<>(new Entry<K, V>(key, value), null, null, null);
 		if (rootNode == null) {
 			rootNode = nodeToPut;
 			size++;
@@ -173,7 +173,7 @@ public class TreeMap<K, V> implements Map<K, V> {
 	@Override
 	public List<K> getKeys() {
 		List<K> list = new LinkedList<>();
-		Stack<NodeItem<K, V>> stack = new Stack<NodeItem<K, V>>();
+		Stack<NodeItem<K, V>> stack = new Stack<>();
 		NodeItem<K, V> currentNode = rootNode;
 
 		while (currentNode != null) {

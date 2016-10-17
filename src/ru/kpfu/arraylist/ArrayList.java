@@ -49,7 +49,7 @@ public class ArrayList<T> implements List<T>, Cloneable {
 	}
 
 	public Iterator<T> getIterator() {
-		return new ArrayListIterator<T>(array, 0, size);
+		return new ArrayListIterator<>(array, 0, size);
 	}
 
 	private void expandArray() {

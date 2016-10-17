@@ -11,8 +11,8 @@ public class HashMapTest {
 
 	private Map<Integer, String> map;
 
-	int n=100000;
-	
+	int n = 100000;
+
 	@Before
 	public void init() {
 		map = new HashMap<>();
@@ -44,7 +44,7 @@ public class HashMapTest {
 		String key2 = key1 + key1;
 		String value1 = "abc";
 		String value2 = "xyz";
-		Map<String, String> map = new HashMap<String, String>();
+		Map<String, String> map = new HashMap<>();
 		map.put(key1, value1);
 		map.put(key2, value2);
 		assertEquals(map.getSize(), 2);
@@ -62,7 +62,7 @@ public class HashMapTest {
 		for (int i = 0; i < n; i++) {
 			map.put(i, "abc");
 		}
-		
+
 		assertEquals(map.getSize(), n);
 	}
 

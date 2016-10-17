@@ -12,8 +12,8 @@ public class LinkedListTest {
 
 	private LinkedList<Integer> list;
 
-	int n = 10000;
-	
+	int n = 1000;
+
 	@Before
 	public void init() {
 		list = new LinkedList<>();
@@ -37,33 +37,43 @@ public class LinkedListTest {
 		assertNotEquals(list.getFirst(), list.getLast());
 		assertTrue(list.getFirst().equals(first) && list.getLast().equals(last));
 	}
-	
-
 
 	@Test
 	public void testRemove() {
-		
+
 		for (int i = 0; i < n; i++) {
 			list.add(i);
 		}
 
 		for (int i = 0; i < n; i++) {
-			list.remove();
-			
+			list.removeFirst();
+
 		}
 		assertEquals(list.getSize(), 0);
 		assertTrue(list.isEmpty());
+
+		for (int i = 0; i < n; i++) {
+			list.add(i);
+		}
+
+		for (int i = 0; i < n; i++) {
+			list.removeLast();
+		}
+		assertEquals(list.getSize(), 0);
+		assertTrue(list.isEmpty());
+		assertNull(list.getFirst());
+		assertNull(list.getLast());
 	}
 
 	@Test
 	public void testRemoveByIndex() {
-		
+
 		for (int i = 0; i < n; i++) {
 			list.add(i);
 		}
-		
-		for (int i = 0; i < n; i++) {	
-			list.remove(n-1-i);
+
+		for (int i = 0; i < n; i++) {
+			list.remove(n - 1 - i);
 		}
 		assertEquals(list.getSize(), 0);
 		assertTrue(list.isEmpty());
