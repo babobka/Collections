@@ -14,12 +14,14 @@ public class HashMapTest {
 
 	int n = 100000;
 
-	int collisions = 100;
+	int collisions = 1000;
 
 	@Before
 	public void init() {
-		map = new HashMap<>();
-		collisionMap = new HashMap<>();
+		map = new LinkedChainHashMap<>();
+		collisionMap = new LinkedChainHashMap<>();
+		//map = new TreeChainHashMap<>();
+		//collisionMap = new TreeChainHashMap<>();
 	}
 
 	@Test
@@ -70,13 +72,26 @@ public class HashMapTest {
 		assertEquals(map.getSize(), n);
 	}
 
-	@Test
+	//@Test
 	public void testCollisionsPutALot() {
 		for (int i = 0; i < collisions; i++) {
 			collisionMap.put(generateCollisionString(i + 1), "abc");
 		}
 
 		assertEquals(collisionMap.getSize(), collisions);
+	}
+
+	@Test
+	public void testRemoveNotExisting() {
+		for (int i = 0; i < n; i++) {
+			map.put(i, "abc");
+		}
+		for (int i = 0; i < n; i++) {
+			map.remove(n + i);
+		}
+		assertFalse(map.isEmpty());
+		assertEquals(map.getSize(), n);
+
 	}
 
 	@Test
@@ -88,8 +103,8 @@ public class HashMapTest {
 		for (int i = 0; i < nonCollisions; i++) {
 			collisionMap.put(String.valueOf(i), "abc");
 		}
-		
-		assertEquals(collisionMap.getSize(), collisions+nonCollisions);
+
+		assertEquals(collisionMap.getSize(), collisions + nonCollisions);
 
 		for (int i = 0; i < collisions; i++) {
 			collisionMap.remove(generateCollisionString(i + 1));

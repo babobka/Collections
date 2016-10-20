@@ -7,32 +7,19 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.Test;
 
-import ru.kpfu.collection.Comparator;
 import ru.kpfu.list.Iterator;
 import ru.kpfu.list.List;
-import ru.kpfu.map.Map;
 import ru.kpfu.tree.TreeMap;
 
 public class TreeMapTest {
 
-	private Map<Integer, String> map;
+	private TreeMap<Integer, String> map;
 
-	private int n = 100000;
+	private int n = 10000;
 
 	@Before
 	public void init() {
-		map = new TreeMap<Integer, String>(new Comparator<Integer>() {
-
-			@Override
-			public int compare(Integer o1, Integer o2) {
-				if (o1 > o2) {
-					return 1;
-				} else if (o1 < o2) {
-					return -1;
-				}
-				return 0;
-			}
-		});
+		map = new TreeMap<Integer, String>();
 	}
 
 	@Test
@@ -60,9 +47,24 @@ public class TreeMapTest {
 
 		for (int i = 0; i < n; i++) {
 			map.put((int) (Math.random() * n), "abc");
+			// getClass().System.out.println();
+			//assertTrue(isListSorted(map.getSortedKeys()));
 		}
 		assertTrue(map.getSize() <= n);
 		assertEquals(map.getSize(), map.getKeys().getSize());
+	}
+
+	@Test
+	public void testGet() {
+
+		for (int i = 0; i < n; i++) {
+			map.put(i, "abc");
+		}
+
+		for (int i = 0; i < n; i++) {
+			assertTrue(map.containsKey(i));
+		}
+
 	}
 
 	@Test
@@ -79,6 +81,31 @@ public class TreeMapTest {
 		assertTrue(map.isEmpty());
 		assertEquals(map.getSize(), 0);
 		assertEquals(map.getKeys().getSize(), 0);
+
+	}
+
+	@Test
+	public void testSpecialCaseRemove() {
+
+		
+		int[] keys={15,16,10,9,12,13,11};
+		
+		for(int i=0;i<keys.length;i++)
+		{
+			map.put(keys[i], "abc");
+		}
+		map.remove(10);
+		for(int i=0;i<keys.length;i++)
+		{
+			map.remove(keys[i]);
+		}
+		/*List<Integer> keys=map.getKeys();
+		Iterator<Integer> iterator=keys.getIterator();
+		
+		while(iterator.hasNext())
+		{
+			map.remove(iterator.next());
+		}*/
 
 	}
 
@@ -103,6 +130,7 @@ public class TreeMapTest {
 		assertEquals(map.getKeys().getSize(), map.getSize());
 	}
 
+	
 	@Test
 	public void testContains() {
 
@@ -116,13 +144,20 @@ public class TreeMapTest {
 		}
 	}
 
-	/*
-	 * private boolean isListSorted(List<Integer> list) { Iterator<Integer>
-	 * iterator = list.getIterator(); Integer current, previous = null; while
-	 * (iterator.hasNext()) { current = iterator.next(); if (previous != null) {
-	 * if (current < previous) { return false; } } previous = current;
-	 * 
-	 * } return true; }
-	 */
+	/*private boolean isListSorted(List<Integer> list) {
+		Iterator<Integer> iterator = list.getIterator();
+		Integer current, previous = null;
+		while (iterator.hasNext()) {
+			current = iterator.next();
+			if (previous != null) {
+				if (current < previous) {
+					return false;
+				}
+			}
+			previous = current;
+
+		}
+		return true;
+	}*/
 
 }

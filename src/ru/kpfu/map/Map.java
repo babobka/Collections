@@ -4,7 +4,8 @@ import ru.kpfu.list.List;
 
 public interface Map<K, V> {
 
-	public void put(K key, V value);
+	public boolean put(K key, V value);
+	
 
 	public V get(K key);
 
@@ -19,5 +20,7 @@ public interface Map<K, V> {
 	public void clear();
 
 	public List<K> getKeys();
+	
+	public List<Entry<K,V>> getEntries();
 
 }

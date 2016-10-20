@@ -33,6 +33,9 @@ public class NodeItem<K, V> {
 	}
 
 	public void setLeftNode(NodeItem<K, V> leftNode) {
+		if (this == leftNode) {
+			throw new IllegalArgumentException("Recursive node");
+		}
 		this.leftNode = leftNode;
 	}
 
@@ -41,6 +44,9 @@ public class NodeItem<K, V> {
 	}
 
 	public void setRightNode(NodeItem<K, V> rightNode) {
+		if (this == rightNode) {
+			throw new IllegalArgumentException("Recursive node");
+		}
 		this.rightNode = rightNode;
 	}
 
@@ -53,6 +59,9 @@ public class NodeItem<K, V> {
 	}
 
 	public void setParentNode(NodeItem<K, V> parentNode) {
+		if (this == parentNode) {
+			throw new IllegalArgumentException("Recursive node");
+		}
 		this.parentNode = parentNode;
 	}
 

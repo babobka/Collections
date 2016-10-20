@@ -24,7 +24,7 @@ public class ArrayList<T> implements List<T>, Cloneable {
 		size++;
 	}
 
-	public void remove(int i) {
+	public void removeByIndex(int i) {
 		if (i < 0 || i > size) {
 			throw new IllegalArgumentException("Index " + i + " is out of bounds");
 		}
@@ -154,7 +154,28 @@ public class ArrayList<T> implements List<T>, Cloneable {
 
 	@Override
 	public void remove() {
-		remove(0);
+		removeByIndex(0);
+	}
+
+	@Override
+	public boolean remove(T value) {
+		for (int i = 0; i < size; i++) {
+			if (array[i].equals(value)) {
+				removeByIndex(i);
+				return true;
+			}
+		}
+		return false;
+	}
+
+	@Override
+	public boolean contains(T value) {
+		for (int i = 0; i < size; i++) {
+			if (array[i].equals(value)) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 }

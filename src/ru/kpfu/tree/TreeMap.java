@@ -1,40 +1,32 @@
 package ru.kpfu.tree;
 
-import ru.kpfu.collection.Comparator;
 import ru.kpfu.linkedlist.LinkedList;
+import ru.kpfu.list.Iterator;
 import ru.kpfu.list.List;
 import ru.kpfu.map.Entry;
 import ru.kpfu.map.Map;
 import ru.kpfu.stack.Stack;
 
-public class TreeMap<K, V> implements Map<K, V> {
+public class TreeMap<K extends Comparable<K>, V> implements Map<K, V> {
 
 	private NodeItem<K, V> rootNode;
 
-	private Comparator<K> comparator;
-
 	private int size;
 
-	public TreeMap(Comparator<K> comparator) {
-		if (comparator == null) {
-			throw new IllegalArgumentException("Comparator can not be null");
-		}
-		this.comparator = comparator;
-	}
-
 	@Override
-	public void put(K key, V value) {
+	public boolean put(K key, V value) {
 		NodeItem<K, V> nodeToPut = new NodeItem<>(new Entry<K, V>(key, value), null, null, null);
 		if (rootNode == null) {
 			rootNode = nodeToPut;
 			size++;
+			return true;
 		} else {
 
 			NodeItem<K, V> currentNode = rootNode;
 			NodeItem<K, V> previousNode = null;
 			Boolean leftNode = null;
 			while (currentNode != null) {
-				int compareResult = comparator.compare(currentNode.getEntry().getKey(), key);
+				int compareResult = currentNode.getEntry().getKey().compareTo(key);
 				previousNode = currentNode;
 				if (compareResult > 0) {
 					currentNode = currentNode.getLeftNode();
@@ -44,7 +36,7 @@ public class TreeMap<K, V> implements Map<K, V> {
 					leftNode = false;
 				} else {
 					currentNode.setEntry(nodeToPut.getEntry());
-					return;
+					return false;
 				}
 			}
 			nodeToPut.setParentNode(previousNode);
@@ -56,6 +48,8 @@ public class TreeMap<K, V> implements Map<K, V> {
 				previousNode.setRightNode(nodeToPut);
 			}
 			size++;
+			return true;
+
 		}
 	}
 
@@ -71,10 +65,12 @@ public class TreeMap<K, V> implements Map<K, V> {
 	private NodeItem<K, V> getNode(K key) {
 		NodeItem<K, V> currentNode = rootNode;
 		while (currentNode != null) {
-			int compareResult = comparator.compare(currentNode.getEntry().getKey(), key);
+			int compareResult = currentNode.getEntry().getKey().compareTo(key);
 			if (compareResult > 0) {
+
 				currentNode = currentNode.getLeftNode();
 			} else if (compareResult < 0) {
+
 				currentNode = currentNode.getRightNode();
 			} else {
 				return currentNode;
@@ -85,9 +81,14 @@ public class TreeMap<K, V> implements Map<K, V> {
 
 	@Override
 	public void remove(K key) {
+
 		if (!isEmpty()) {
 
 			NodeItem<K, V> nodeItem = getNode(key);
+			if (nodeItem == null) {
+				return;
+			}
+
 			if (nodeItem.getRightNode() == null && nodeItem.getLeftNode() == null) {
 
 				NodeItem<K, V> parentNode = nodeItem.getParentNode();
@@ -104,17 +105,14 @@ public class TreeMap<K, V> implements Map<K, V> {
 
 				NodeItem<K, V> childNode;
 				if (nodeItem.getRightNode() != null) {
-
 					childNode = nodeItem.getRightNode();
 				} else {
-
 					childNode = nodeItem.getLeftNode();
 				}
 				NodeItem<K, V> parentNode = nodeItem.getParentNode();
 				if (parentNode != null) {
 					if (parentNode.getLeftNode() == nodeItem) {
 						parentNode.setLeftNode(childNode);
-
 					} else {
 						parentNode.setRightNode(childNode);
 					}
@@ -124,16 +122,19 @@ public class TreeMap<K, V> implements Map<K, V> {
 					childNode.setParentNode(null);
 					rootNode = childNode;
 				}
-
 			} else {
-
-				NodeItem<K, V> successorNode = nodeItem.getRightNode();
-				while (successorNode.getLeftNode() != null) {
-					successorNode = successorNode.getLeftNode();
+				NodeItem<K, V> successorNode = getSuccessor(nodeItem);
+				if (successorNode != nodeItem.getRightNode()) {
+					successorNode.getParentNode().setLeftNode(null);
+					if (successorNode.getRightNode() != null) {
+						successorNode.getRightNode().setParentNode(successorNode.getParentNode());
+						successorNode.getParentNode().setLeftNode(successorNode.getRightNode());
+					}
 				}
-				successorNode.setParentNode(nodeItem.getParentNode());
+
 				NodeItem<K, V> parentNode = nodeItem.getParentNode();
 				if (parentNode != null) {
+					successorNode.setParentNode(parentNode);
 					if (parentNode.getLeftNode() == nodeItem) {
 						parentNode.setLeftNode(successorNode);
 					} else {
@@ -146,12 +147,23 @@ public class TreeMap<K, V> implements Map<K, V> {
 
 				successorNode.setLeftNode(nodeItem.getLeftNode());
 				nodeItem.getLeftNode().setParentNode(successorNode);
-
-				successorNode.setRightNode(nodeItem.getRightNode());
-				nodeItem.getRightNode().setParentNode(successorNode);
+				if (successorNode != nodeItem.getRightNode()) {
+					successorNode.setRightNode(nodeItem.getRightNode());
+					nodeItem.getRightNode().setParentNode(successorNode);
+				}
 			}
-			size--;
+
 		}
+		size--;
+
+	}
+
+	private NodeItem<K, V> getSuccessor(NodeItem<K, V> nodeItemToDelete) {
+		NodeItem<K, V> successorNode = nodeItemToDelete.getRightNode();
+		while (successorNode.getLeftNode() != null) {
+			successorNode = successorNode.getLeftNode();
+		}
+		return successorNode;
 	}
 
 	@Override
@@ -173,11 +185,44 @@ public class TreeMap<K, V> implements Map<K, V> {
 	@Override
 	public List<K> getKeys() {
 		List<K> list = new LinkedList<>();
+		List<Entry<K, V>> entriesList = this.getEntries();
+		Iterator<Entry<K, V>> iterator = entriesList.getIterator();
+		while (iterator.hasNext()) {
+			list.add(iterator.next().getKey());
+		}
+		return list;
+
+	}
+
+	public List<K> getSortedKeys() {
+		List<K> list = new LinkedList<>();
+		addKeysToList(rootNode, list);
+		return list;
+	}
+
+	private void addKeysToList(NodeItem<K, V> nodeItem, List<K> list) {
+		if (nodeItem != null) {
+			addKeysToList(nodeItem.getRightNode(), list);
+			list.add(nodeItem.getEntry().getKey());
+			addKeysToList(nodeItem.getLeftNode(), list);
+		}
+	}
+
+	@Override
+	public void clear() {
+		rootNode = null;
+		size = 0;
+
+	}
+
+	@Override
+	public List<Entry<K, V>> getEntries() {
+		List<Entry<K, V>> list = new LinkedList<>();
 		Stack<NodeItem<K, V>> stack = new Stack<>();
 		NodeItem<K, V> currentNode = rootNode;
 
 		while (currentNode != null) {
-			list.add(currentNode.getEntry().getKey());
+			list.add(currentNode.getEntry());
 			if (currentNode.getRightNode() != null) {
 				stack.push(currentNode.getRightNode());
 			}
@@ -187,28 +232,6 @@ public class TreeMap<K, V> implements Map<K, V> {
 			currentNode = stack.pop();
 		}
 		return list;
-
 	}
-
-	/*
-	 * @Override public List<K> getKeys() { List<K> list = new LinkedList<>();
-	 * addKeysToList(rootNode, list); return list; }
-	 */
-
-	/*
-	 * private void addKeysToList(NodeItem<K, V> nodeItem, List<K> list) { if
-	 * (nodeItem != null) { addKeysToList(nodeItem.getRightNode(), list);
-	 * list.add(nodeItem.getEntry().getKey());
-	 * addKeysToList(nodeItem.getLeftNode(), list); } }
-	 */
-
-	@Override
-	public void clear() {
-		rootNode = null;
-		size = 0;
-
-	}
-
-	
 
 }

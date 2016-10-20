@@ -7,7 +7,7 @@ import ru.kpfu.map.Entry;
 import ru.kpfu.map.Map;
 import ru.kpfu.util.MathUtil;
 
-public class HashMap<K, V> implements Map<K, V> {
+public class LinkedChainHashMap<K, V> implements Map<K, V> {
 
 	private static final int MIN_SIZE = 11;
 
@@ -52,22 +52,23 @@ public class HashMap<K, V> implements Map<K, V> {
 				counter++;
 			}
 			if (indexToDelete != -1) {
-				collisionList.remove(indexToDelete);
+				collisionList.removeByIndex(indexToDelete);
 				if (collisionList.isEmpty()) {
 					collisionListArray.set(hash, null);
 				}
+				size--;
 			}
-			size--;
+
 		}
 	}
 
 	@Override
 	public boolean containsKey(K key) {
 		int hash = hash(key);
-		if (collisionListArray.get(hash) == null) {
+		List<Entry<K, V>> collisionList = collisionListArray.get(hash);
+		if (collisionList == null) {
 			return false;
 		} else {
-			List<Entry<K, V>> collisionList = collisionListArray.get(hash);
 			Iterator<Entry<K, V>> iterator = collisionList.getIterator();
 			Entry<K, V> tempEntry;
 			while (iterator.hasNext()) {
@@ -94,21 +95,10 @@ public class HashMap<K, V> implements Map<K, V> {
 	@Override
 	public List<K> getKeys() {
 		List<K> keysList = new LinkedList<>();
-		int addedCounter = 0;
-		if (!isEmpty()) {
-			for (int i = 0; i < collisionListArray.getSize(); i++) {
-				if (addedCounter >= size) {
-					break;
-				}
-				List<Entry<K, V>> collisionList = collisionListArray.get(i);
-				Iterator<Entry<K, V>> iterator = collisionList.getIterator();
-				while (iterator.hasNext()) {
-					keysList.add(iterator.next().getKey());
-					addedCounter++;
-				}
-
-			}
-
+		List<Entry<K, V>> entryList = this.getEntries();
+		Iterator<Entry<K, V>> iterator = entryList.getIterator();
+		while (iterator.hasNext()) {
+			keysList.add(iterator.next().getKey());
 		}
 		return keysList;
 	}
@@ -117,8 +107,8 @@ public class HashMap<K, V> implements Map<K, V> {
 		GenericArray<List<Entry<K, V>>> newCollisionListArray = new GenericArray<>(
 				MathUtil.getNextPrime((int) (collisionListArray.getSize() * GROWTH_COEFFICIENT)));
 		for (int i = 0; i < collisionListArray.getSize(); i++) {
-			if (collisionListArray.get(i) != null) {
-				List<Entry<K, V>> collisonList = collisionListArray.get(i);
+			List<Entry<K, V>> collisonList = collisionListArray.get(i);
+			if (collisonList != null) {
 				Iterator<Entry<K, V>> iterator = collisonList.getIterator();
 				Entry<K, V> tempEntry;
 				while (iterator.hasNext()) {
@@ -130,41 +120,40 @@ public class HashMap<K, V> implements Map<K, V> {
 		collisionListArray = newCollisionListArray;
 	}
 
-	private int put(GenericArray<List<Entry<K, V>>> collisionListArray, K key, V value) {
-		int added = 0;
+	private boolean put(GenericArray<List<Entry<K, V>>> collisionListArray, K key, V value) {
 		int hash = hash(key, collisionListArray.getSize());
-		if (collisionListArray.get(hash) == null) {
-			List<Entry<K, V>> collisionList = new LinkedList<>();
+		List<Entry<K, V>> collisionList = collisionListArray.get(hash);
+		if (collisionList == null) {
+			collisionList=new LinkedList<>();
 			collisionList.add(new Entry<>(key, value));
 			collisionListArray.set(hash, collisionList);
-			added = 1;
+			return true;
 		} else {
-			List<Entry<K, V>> collisionList = collisionListArray.get(hash);
 			Iterator<Entry<K, V>> iterator = collisionList.getIterator();
 			Entry<K, V> tempEntry;
-			boolean keyExists = false;
+
 			while (iterator.hasNext()) {
 				tempEntry = iterator.next();
 				if (tempEntry.getKey().equals(key)) {
 					tempEntry.setValue(value);
-					keyExists = true;
-					break;
+					return false;
 				}
 			}
-			if (!keyExists) {
-				collisionList.add(new Entry<>(key, value));
-				added = 1;
-			}
+			collisionList.add(new Entry<>(key, value));
+			return true;
 		}
-		return added;
 	}
 
 	@Override
-	public void put(K key, V value) {
+	public boolean put(K key, V value) {
 		if (size == collisionListArray.getSize() - 1) {
 			expandAndRehash();
 		}
-		size += put(collisionListArray, key, value);
+		if (put(collisionListArray, key, value)) {
+			size++;
+			return true;
+		}
+		return false;
 	}
 
 	private int hash(K k) {
@@ -182,4 +171,21 @@ public class HashMap<K, V> implements Map<K, V> {
 
 	}
 
+	@Override
+	public List<Entry<K, V>> getEntries() {
+		List<Entry<K, V>> list = new LinkedList<>();
+		int addedCounter = 0;
+		if (!isEmpty()) {
+			for (int i = 0; i < collisionListArray.getSize(); i++) {
+				if (addedCounter >= size) {
+					break;
+				}
+				List<Entry<K, V>> collisionList = collisionListArray.get(i);
+				if (collisionList != null) {
+					list.addAll(collisionList);
+				}
+			}
+		}
+		return list;
+	}
 }

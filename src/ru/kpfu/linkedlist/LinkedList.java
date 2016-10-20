@@ -185,7 +185,7 @@ public class LinkedList<T> implements List<T>, Cloneable {
 	}
 
 	@Override
-	public void remove(int i) {
+	public void removeByIndex(int i) {
 		if (i < 0 || i >= size) {
 			throw new IllegalArgumentException("Index " + i + " is out of bounds");
 		}
@@ -200,6 +200,34 @@ public class LinkedList<T> implements List<T>, Cloneable {
 			counter++;
 		}
 
+	}
+
+	@Override
+	public boolean remove(T value) {
+		if (value == null) {
+			throw new IllegalArgumentException("Value is null");
+		}
+		Node<T> currentNode = firstNode;
+		while (currentNode != null) {
+			if (value.equals(currentNode.getValue())) {
+				remove(currentNode);
+				return true;
+			}
+			currentNode = currentNode.getNext();
+
+		}
+		return false;
+	}
+
+	@Override
+	public boolean contains(T value) {
+		Iterator<T> iterator = this.getIterator();
+		while (iterator.hasNext()) {
+			if (iterator.next().equals(value)) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 }
