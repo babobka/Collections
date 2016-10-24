@@ -14,12 +14,9 @@ public class TreeChainHashMap<K extends Comparable<K>, V> implements Map<K, V> {
 
 	private static final double GROWTH_COEFFICIENT = 1.5D;
 
-
-
 	private int size;
 
 	private GenericArray<TreeMap<K, V>> collisionMapArray = new GenericArray<>(MIN_SIZE);
-
 
 	@Override
 	public V get(K key) {
@@ -86,14 +83,14 @@ public class TreeChainHashMap<K extends Comparable<K>, V> implements Map<K, V> {
 				Entry<K, V> tempEntry;
 				while (iterator.hasNext()) {
 					tempEntry = iterator.next();
-					put(newCollisionMapArray, tempEntry.getKey(), tempEntry.getValue());
+					insert(newCollisionMapArray, tempEntry.getKey(), tempEntry.getValue());
 				}
 			}
 		}
 		collisionMapArray = newCollisionMapArray;
 	}
 
-	private boolean put(GenericArray<TreeMap<K, V>> collisionMapArray, K key, V value) {
+	private boolean insert(GenericArray<TreeMap<K, V>> collisionMapArray, K key, V value) {
 		int hash = hash(key, collisionMapArray.getSize());
 		TreeMap<K, V> collisionMap = collisionMapArray.get(hash);
 		if (collisionMap == null) {
@@ -111,7 +108,7 @@ public class TreeChainHashMap<K extends Comparable<K>, V> implements Map<K, V> {
 		if (size == collisionMapArray.getSize() - 1) {
 			expandAndRehash();
 		}
-		if (put(collisionMapArray, key, value)) {
+		if (insert(collisionMapArray, key, value)) {
 			size++;
 			return true;
 		}
@@ -123,7 +120,7 @@ public class TreeChainHashMap<K extends Comparable<K>, V> implements Map<K, V> {
 	}
 
 	private int hash(K k, int n) {
-		return (k.hashCode()) % n;
+		return Math.abs(k.hashCode() % n);
 	}
 
 	@Override

@@ -47,21 +47,20 @@ public class TreeMapTest {
 
 		for (int i = 0; i < n; i++) {
 			map.put((int) (Math.random() * n), "abc");
-			// getClass().System.out.println();
-			//assertTrue(isListSorted(map.getSortedKeys()));
 		}
 		assertTrue(map.getSize() <= n);
 		assertEquals(map.getSize(), map.getKeys().getSize());
 	}
 
 	@Test
-	public void testGet() {
-
+	public void testContainsInOrder() {
+		
 		for (int i = 0; i < n; i++) {
 			map.put(i, "abc");
 		}
-
+		System.out.println("Done putting");
 		for (int i = 0; i < n; i++) {
+		//	System.out.println(i);
 			assertTrue(map.containsKey(i));
 		}
 
@@ -83,29 +82,42 @@ public class TreeMapTest {
 		assertEquals(map.getKeys().getSize(), 0);
 
 	}
+	
+	
+	@Test
+	public void testRemoveOrdered() {
+
+		for (int i = 0; i < n; i++) {
+			map.put(i, "abc");
+		}
+		for(int i=0;i<n;i++)
+		{
+			map.remove(n-i-1);
+		}
+		assertTrue(map.isEmpty());
+		assertEquals(map.getSize(), 0);
+		assertEquals(map.getKeys().getSize(), 0);
+
+	}
 
 	@Test
 	public void testSpecialCaseRemove() {
 
-		
-		int[] keys={15,16,10,9,12,13,11};
-		
-		for(int i=0;i<keys.length;i++)
-		{
+		int[] keys = { 15, 16, 10, 9, 12, 13, 11 };
+
+		for (int i = 0; i < keys.length; i++) {
 			map.put(keys[i], "abc");
 		}
 		map.remove(10);
-		for(int i=0;i<keys.length;i++)
-		{
+		for (int i = 0; i < keys.length; i++) {
 			map.remove(keys[i]);
 		}
-		/*List<Integer> keys=map.getKeys();
-		Iterator<Integer> iterator=keys.getIterator();
-		
-		while(iterator.hasNext())
-		{
-			map.remove(iterator.next());
-		}*/
+		/*
+		 * List<Integer> keys=map.getKeys(); Iterator<Integer>
+		 * iterator=keys.getIterator();
+		 * 
+		 * while(iterator.hasNext()) { map.remove(iterator.next()); }
+		 */
 
 	}
 
@@ -130,7 +142,6 @@ public class TreeMapTest {
 		assertEquals(map.getKeys().getSize(), map.getSize());
 	}
 
-	
 	@Test
 	public void testContains() {
 
@@ -144,20 +155,13 @@ public class TreeMapTest {
 		}
 	}
 
-	/*private boolean isListSorted(List<Integer> list) {
-		Iterator<Integer> iterator = list.getIterator();
-		Integer current, previous = null;
-		while (iterator.hasNext()) {
-			current = iterator.next();
-			if (previous != null) {
-				if (current < previous) {
-					return false;
-				}
-			}
-			previous = current;
-
-		}
-		return true;
-	}*/
+	/*
+	 * private boolean isListSorted(List<Integer> list) { Iterator<Integer>
+	 * iterator = list.getIterator(); Integer current, previous = null; while
+	 * (iterator.hasNext()) { current = iterator.next(); if (previous != null) {
+	 * if (current < previous) { return false; } } previous = current;
+	 * 
+	 * } return true; }
+	 */
 
 }

@@ -172,6 +172,11 @@ public class LinkedList<T> implements List<T>, Cloneable {
 		if (i < 0 || i >= size) {
 			throw new IllegalArgumentException("Index " + i + " is out of bounds");
 		}
+		if (i == 0) {
+			return getFirst();
+		} else if (i == size - 1) {
+			return getLast();
+		}
 		int counter = 0;
 		Iterator<T> iterator = this.getIterator();
 		while (iterator.hasNext()) {
@@ -189,15 +194,21 @@ public class LinkedList<T> implements List<T>, Cloneable {
 		if (i < 0 || i >= size) {
 			throw new IllegalArgumentException("Index " + i + " is out of bounds");
 		}
-		Node<T> currentNode = firstNode;
-		int counter = 0;
-		while (currentNode != null) {
-			if (counter == i) {
-				remove(currentNode);
-				break;
+		if (i == 0) {
+			removeFirst();
+		} else if (i == size - 1) {
+			removeLast();
+		} else {
+			Node<T> currentNode = firstNode;
+			int counter = 0;
+			while (currentNode != null) {
+				if (counter == i) {
+					remove(currentNode);
+					break;
+				}
+				currentNode = currentNode.getNext();
+				counter++;
 			}
-			currentNode = currentNode.getNext();
-			counter++;
 		}
 
 	}

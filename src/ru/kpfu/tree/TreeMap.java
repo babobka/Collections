@@ -11,17 +11,19 @@ public class TreeMap<K extends Comparable<K>, V> implements Map<K, V> {
 
 	private NodeItem<K, V> rootNode;
 
+
 	private int size;
 
 	@Override
 	public boolean put(K key, V value) {
 		NodeItem<K, V> nodeToPut = new NodeItem<>(new Entry<K, V>(key, value), null, null, null);
+
 		if (rootNode == null) {
 			rootNode = nodeToPut;
+
 			size++;
 			return true;
 		} else {
-
 			NodeItem<K, V> currentNode = rootNode;
 			NodeItem<K, V> previousNode = null;
 			Boolean leftNode = null;
@@ -43,8 +45,10 @@ public class TreeMap<K extends Comparable<K>, V> implements Map<K, V> {
 			if (leftNode == null) {
 				throw new NullPointerException();
 			} else if (leftNode) {
+				
 				previousNode.setLeftNode(nodeToPut);
 			} else {
+				
 				previousNode.setRightNode(nodeToPut);
 			}
 			size++;
@@ -63,34 +67,34 @@ public class TreeMap<K extends Comparable<K>, V> implements Map<K, V> {
 	}
 
 	private NodeItem<K, V> getNode(K key) {
+		
+		int counter = 0;
 		NodeItem<K, V> currentNode = rootNode;
-		while (currentNode != null) {
+		while (currentNode != null && counter < size) {
 			int compareResult = currentNode.getEntry().getKey().compareTo(key);
 			if (compareResult > 0) {
-
 				currentNode = currentNode.getLeftNode();
 			} else if (compareResult < 0) {
-
 				currentNode = currentNode.getRightNode();
 			} else {
 				return currentNode;
 			}
+			counter++;
 		}
 		return null;
 	}
 
 	@Override
 	public void remove(K key) {
-
 		if (!isEmpty()) {
 
 			NodeItem<K, V> nodeItem = getNode(key);
+
 			if (nodeItem == null) {
 				return;
 			}
 
 			if (nodeItem.getRightNode() == null && nodeItem.getLeftNode() == null) {
-
 				NodeItem<K, V> parentNode = nodeItem.getParentNode();
 				if (parentNode != null) {
 					if (parentNode.getLeftNode() == nodeItem) {
@@ -98,8 +102,11 @@ public class TreeMap<K extends Comparable<K>, V> implements Map<K, V> {
 					} else {
 						parentNode.setRightNode(null);
 					}
+
+					
 				} else {
 					rootNode = null;
+					
 				}
 			} else if (nodeItem.getRightNode() == null ^ nodeItem.getLeftNode() == null) {
 
@@ -118,9 +125,9 @@ public class TreeMap<K extends Comparable<K>, V> implements Map<K, V> {
 					}
 					childNode.setParentNode(parentNode);
 				} else {
-
 					childNode.setParentNode(null);
 					rootNode = childNode;
+					
 				}
 			} else {
 				NodeItem<K, V> successorNode = getSuccessor(nodeItem);

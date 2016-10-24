@@ -2,6 +2,7 @@ package ru.kpfu.linkedlist;
 
 import static org.junit.Assert.*;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -12,11 +13,16 @@ public class LinkedListTest {
 
 	private LinkedList<Integer> list;
 
-	int n = 1000;
+	int n = 1000000;
 
 	@Before
 	public void init() {
 		list = new LinkedList<>();
+	}
+
+	@After
+	public void tearDown() {
+		list.clear();
 	}
 
 	@Test
@@ -73,11 +79,10 @@ public class LinkedListTest {
 		}
 
 		for (int i = 0; i < n; i++) {
-			list.remove(n - 1 - i);
+			list.removeByIndex(n - 1 - i);
 		}
 		assertEquals(list.getSize(), 0);
 		assertTrue(list.isEmpty());
-		list.add(10);
 	}
 
 	@Test
@@ -107,7 +112,19 @@ public class LinkedListTest {
 	}
 
 	@Test
+	public void tesGet() {
+		for (int i = 0; i < n; i++) {
+			list.add(i);
+		}
+		for (int i = 0; i < n; i++) {
+			assertNotNull(list.get(i));
+		}
+
+	}
+
+	@Test
 	public void testEquality() {
+
 		assertEquals(list, list);
 	}
 

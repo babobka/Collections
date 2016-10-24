@@ -113,14 +113,14 @@ public class LinkedChainHashMap<K, V> implements Map<K, V> {
 				Entry<K, V> tempEntry;
 				while (iterator.hasNext()) {
 					tempEntry = iterator.next();
-					put(newCollisionListArray, tempEntry.getKey(), tempEntry.getValue());
+					insert(newCollisionListArray, tempEntry.getKey(), tempEntry.getValue());
 				}
 			}
 		}
 		collisionListArray = newCollisionListArray;
 	}
 
-	private boolean put(GenericArray<List<Entry<K, V>>> collisionListArray, K key, V value) {
+	private boolean insert(GenericArray<List<Entry<K, V>>> collisionListArray, K key, V value) {
 		int hash = hash(key, collisionListArray.getSize());
 		List<Entry<K, V>> collisionList = collisionListArray.get(hash);
 		if (collisionList == null) {
@@ -149,7 +149,7 @@ public class LinkedChainHashMap<K, V> implements Map<K, V> {
 		if (size == collisionListArray.getSize() - 1) {
 			expandAndRehash();
 		}
-		if (put(collisionListArray, key, value)) {
+		if (insert(collisionListArray, key, value)) {
 			size++;
 			return true;
 		}
@@ -161,7 +161,7 @@ public class LinkedChainHashMap<K, V> implements Map<K, V> {
 	}
 
 	private int hash(K k, int n) {
-		return (k.hashCode()) % n;
+		return Math.abs(k.hashCode() % n);
 	}
 
 	@Override
