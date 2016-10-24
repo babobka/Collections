@@ -19,6 +19,8 @@ public interface MathUtil {
 		int localN = n;
 		if (localN % 2 == 0) {
 			localN++;
+		} else {
+			localN += 2;
 		}
 
 		while (!isPrime(localN)) {

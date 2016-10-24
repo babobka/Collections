@@ -49,7 +49,9 @@ public class BadHashMap<K, V> implements Map<K, V> {
 	public void remove(K key) {
 		int hashCode = hash(key);
 		Entry<K, V> entry = array.get(hashCode);
+
 		if (entry != null && entry.getKey().equals(key)) {
+
 			size--;
 			array.set(hashCode, null);
 		}
@@ -59,7 +61,7 @@ public class BadHashMap<K, V> implements Map<K, V> {
 	@Override
 	public boolean containsKey(K key) {
 		Entry<K, V> entry = array.get(hash(key));
-		return entry != null && entry.equals(key);
+		return entry != null && entry.getKey().equals(key);
 	}
 
 	@Override
