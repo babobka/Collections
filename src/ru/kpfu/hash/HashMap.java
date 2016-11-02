@@ -1,4 +1,4 @@
-package ru.kpfu.hashmap;
+package ru.kpfu.hash;
 
 import ru.kpfu.linkedlist.LinkedList;
 import ru.kpfu.list.Iterator;
@@ -7,7 +7,7 @@ import ru.kpfu.map.Entry;
 import ru.kpfu.map.Map;
 import ru.kpfu.util.MathUtil;
 
-public class LinkedChainHashMap<K, V> implements Map<K, V> {
+public class HashMap<K, V> implements Map<K, V> {
 
 	private static final int MIN_SIZE = 11;
 

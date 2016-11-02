@@ -1,4 +1,4 @@
-package ru.kpfu.hashmap;
+package ru.kpfu.hash;
 
 public class GenericArray<T> {
 

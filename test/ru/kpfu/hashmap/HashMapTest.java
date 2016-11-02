@@ -5,6 +5,7 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
+import ru.kpfu.hash.HashMap;
 import ru.kpfu.map.Map;
 
 public class HashMapTest {
@@ -18,8 +19,8 @@ public class HashMapTest {
 
 	@Before
 	public void init() {
-		map = new LinkedChainHashMap<>();
-		collisionMap = new LinkedChainHashMap<>();
+		map = new HashMap<>();
+		collisionMap = new HashMap<>();
 		// map = new TreeChainHashMap<>();
 		// collisionMap = new TreeChainHashMap<>();
 	}

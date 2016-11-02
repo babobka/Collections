@@ -1,4 +1,4 @@
-package ru.kpfu.hashmap;
+package ru.kpfu.hash;
 
 import ru.kpfu.linkedlist.LinkedList;
 import ru.kpfu.list.Iterator;
@@ -82,7 +82,7 @@ public class BadHashMap<K, V> implements Map<K, V> {
 	}
 
 	private void expandAndRehash() {
-		GenericArray<Entry<K, V>> newArray = new GenericArray<>(MathUtil.getNextPrime(array.getSize()));
+		GenericArray<Entry<K, V>> newArray = new GenericArray<>(MathUtil.getNextPrime((int) (array.getSize() * 1.5)));
 		for (int i = 0; i < array.getSize(); i++) {
 			Entry<K, V> entry = array.get(i);
 			if (entry != null) {

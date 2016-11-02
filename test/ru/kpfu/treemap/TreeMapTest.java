@@ -7,6 +7,7 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.Test;
 
+import ru.kpfu.arraylist.ArrayList;
 import ru.kpfu.list.Iterator;
 import ru.kpfu.list.List;
 import ru.kpfu.tree.TreeMap;
@@ -45,22 +46,36 @@ public class TreeMapTest {
 	@Test
 	public void testPutALot() {
 
+		ArrayList<Integer> list = new ArrayList<>();
 		for (int i = 0; i < n; i++) {
-			map.put((int) (Math.random() * n), "abc");
+			list.add(i);
 		}
-		assertTrue(map.getSize() <= n);
+		list.shuffle();
+		for (int i = 0; i < n; i++) {
+			map.put(list.get(i), "abc");
+		}
+		
+		assertEquals(map.getSize(), n);
 		assertEquals(map.getSize(), map.getKeys().getSize());
+	}
+	
+	@Test
+	public void testPutTheSame() {
+		
+		for (int i = 0; i < n; i++) {
+			map.put(0, "abc");
+		}
+		assertEquals(map.getSize(), 1);
 	}
 
 	@Test
 	public void testContainsInOrder() {
-		
+
 		for (int i = 0; i < n; i++) {
 			map.put(i, "abc");
 		}
-		System.out.println("Done putting");
+
 		for (int i = 0; i < n; i++) {
-		//	System.out.println(i);
 			assertTrue(map.containsKey(i));
 		}
 
@@ -82,17 +97,15 @@ public class TreeMapTest {
 		assertEquals(map.getKeys().getSize(), 0);
 
 	}
-	
-	
+
 	@Test
 	public void testRemoveOrdered() {
 
 		for (int i = 0; i < n; i++) {
 			map.put(i, "abc");
 		}
-		for(int i=0;i<n;i++)
-		{
-			map.remove(n-i-1);
+		for (int i = 0; i < n; i++) {
+			map.remove(n - i - 1);
 		}
 		assertTrue(map.isEmpty());
 		assertEquals(map.getSize(), 0);
@@ -112,12 +125,6 @@ public class TreeMapTest {
 		for (int i = 0; i < keys.length; i++) {
 			map.remove(keys[i]);
 		}
-		/*
-		 * List<Integer> keys=map.getKeys(); Iterator<Integer>
-		 * iterator=keys.getIterator();
-		 * 
-		 * while(iterator.hasNext()) { map.remove(iterator.next()); }
-		 */
 
 	}
 
@@ -144,24 +151,44 @@ public class TreeMapTest {
 
 	@Test
 	public void testContains() {
+		ArrayList<Integer> list = new ArrayList<>();
+		for (int i = 0; i < n; i++) {
+			list.add(i);
+		}
+		list.shuffle();
+		for (int i = 0; i < n; i++) {
+			map.put(list.get(i), "abc");
+		}
+		for (int i = 0; i < n; i++) {
+			assertTrue(map.containsKey(list.get(i)));
+		}
+	}
 
+	@Test
+	public void testSorted() {
 		for (int i = 0; i < n; i++) {
 			map.put((int) (Math.random() * n), "abc");
 		}
 		List<Integer> keysList = map.getKeys();
-		Iterator<Integer> iterator = keysList.getIterator();
-		while (iterator.hasNext()) {
-			assertTrue(map.containsKey(iterator.next()));
-		}
+		System.out.println(keysList);
+		assertTrue(isListSorted(keysList));
+
 	}
 
-	/*
-	 * private boolean isListSorted(List<Integer> list) { Iterator<Integer>
-	 * iterator = list.getIterator(); Integer current, previous = null; while
-	 * (iterator.hasNext()) { current = iterator.next(); if (previous != null) {
-	 * if (current < previous) { return false; } } previous = current;
-	 * 
-	 * } return true; }
-	 */
+	private boolean isListSorted(List<Integer> list) {
+		Iterator<Integer> iterator = list.getIterator();
+		Integer current, previous = null;
+		while (iterator.hasNext()) {
+			current = iterator.next();
+			if (previous != null) {
+				if (current < previous) {
+					return false;
+				}
+			}
+			previous = current;
+
+		}
+		return true;
+	}
 
 }

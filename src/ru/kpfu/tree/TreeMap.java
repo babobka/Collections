@@ -11,7 +11,6 @@ public class TreeMap<K extends Comparable<K>, V> implements Map<K, V> {
 
 	private NodeItem<K, V> rootNode;
 
-
 	private int size;
 
 	@Override
@@ -20,13 +19,12 @@ public class TreeMap<K extends Comparable<K>, V> implements Map<K, V> {
 
 		if (rootNode == null) {
 			rootNode = nodeToPut;
-
 			size++;
 			return true;
 		} else {
 			NodeItem<K, V> currentNode = rootNode;
 			NodeItem<K, V> previousNode = null;
-			Boolean leftNode = null;
+			boolean leftNode = true;
 			while (currentNode != null) {
 				int compareResult = currentNode.getEntry().getKey().compareTo(key);
 				previousNode = currentNode;
@@ -42,13 +40,9 @@ public class TreeMap<K extends Comparable<K>, V> implements Map<K, V> {
 				}
 			}
 			nodeToPut.setParentNode(previousNode);
-			if (leftNode == null) {
-				throw new NullPointerException();
-			} else if (leftNode) {
-				
+			if (leftNode) {
 				previousNode.setLeftNode(nodeToPut);
 			} else {
-				
 				previousNode.setRightNode(nodeToPut);
 			}
 			size++;
@@ -67,7 +61,7 @@ public class TreeMap<K extends Comparable<K>, V> implements Map<K, V> {
 	}
 
 	private NodeItem<K, V> getNode(K key) {
-		
+
 		int counter = 0;
 		NodeItem<K, V> currentNode = rootNode;
 		while (currentNode != null && counter < size) {
@@ -103,10 +97,9 @@ public class TreeMap<K extends Comparable<K>, V> implements Map<K, V> {
 						parentNode.setRightNode(null);
 					}
 
-					
 				} else {
 					rootNode = null;
-					
+
 				}
 			} else if (nodeItem.getRightNode() == null ^ nodeItem.getLeftNode() == null) {
 
@@ -127,7 +120,7 @@ public class TreeMap<K extends Comparable<K>, V> implements Map<K, V> {
 				} else {
 					childNode.setParentNode(null);
 					rootNode = childNode;
-					
+
 				}
 			} else {
 				NodeItem<K, V> successorNode = getSuccessor(nodeItem);
@@ -191,29 +184,17 @@ public class TreeMap<K extends Comparable<K>, V> implements Map<K, V> {
 
 	@Override
 	public List<K> getKeys() {
-		List<K> list = new LinkedList<>();
+		LinkedList<K> list = new LinkedList<>();
 		List<Entry<K, V>> entriesList = this.getEntries();
 		Iterator<Entry<K, V>> iterator = entriesList.getIterator();
 		while (iterator.hasNext()) {
-			list.add(iterator.next().getKey());
+			list.addLast(iterator.next().getKey());
 		}
 		return list;
 
 	}
 
-	public List<K> getSortedKeys() {
-		List<K> list = new LinkedList<>();
-		addKeysToList(rootNode, list);
-		return list;
-	}
 
-	private void addKeysToList(NodeItem<K, V> nodeItem, List<K> list) {
-		if (nodeItem != null) {
-			addKeysToList(nodeItem.getRightNode(), list);
-			list.add(nodeItem.getEntry().getKey());
-			addKeysToList(nodeItem.getLeftNode(), list);
-		}
-	}
 
 	@Override
 	public void clear() {
@@ -224,19 +205,19 @@ public class TreeMap<K extends Comparable<K>, V> implements Map<K, V> {
 
 	@Override
 	public List<Entry<K, V>> getEntries() {
-		List<Entry<K, V>> list = new LinkedList<>();
+		if (rootNode == null)
+			return new LinkedList<>();
 		Stack<NodeItem<K, V>> stack = new Stack<>();
 		NodeItem<K, V> currentNode = rootNode;
-
-		while (currentNode != null) {
-			list.add(currentNode.getEntry());
-			if (currentNode.getRightNode() != null) {
-				stack.push(currentNode.getRightNode());
+		List<Entry<K, V>> list = new LinkedList<>();
+		while (!stack.isEmpty() || currentNode!=null) {
+			if (currentNode != null) {
+				stack.push(currentNode);
+				currentNode = currentNode.getRightNode();
+			} else if ((currentNode = stack.pop()) != null) {
+				list.add(currentNode.getEntry());
+				currentNode = currentNode.getLeftNode();
 			}
-			if (currentNode.getLeftNode() != null) {
-				stack.push(currentNode.getLeftNode());
-			}
-			currentNode = stack.pop();
 		}
 		return list;
 	}

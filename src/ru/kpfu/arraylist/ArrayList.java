@@ -178,4 +178,19 @@ public class ArrayList<T> implements List<T>, Cloneable {
 		return false;
 	}
 
+	public void shuffle() {
+		int n = size / 2;
+		for (int i = 0; i < n; i++) {
+			swap(array, i, (int) (Math.random() * size));
+		}
+	}
+
+	private void swap(Object[] array, int i1, int i2) {
+		if (i1 != i2) {
+			Object temp = array[i1];
+			array[i1] = array[i2];
+			array[i2] = temp;
+		}
+	}
+
 }

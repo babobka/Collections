@@ -5,13 +5,14 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 
+import ru.kpfu.hash.BadHashMap;
 import ru.kpfu.map.Map;
 
 public class BadHashMapTest {
 
 	private Map<Integer, String> map;
 
-	private int n = 1000;
+	private int n = 100000;
 
 	@Before
 	public void setUp() {
