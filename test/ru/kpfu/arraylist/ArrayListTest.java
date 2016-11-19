@@ -13,7 +13,7 @@ public class ArrayListTest {
 
 	private ArrayList<Integer> list;
 	
-	int n = 100000;
+	int n = 10000;
 
 	@Before
 	public void init() {
@@ -87,7 +87,7 @@ public class ArrayListTest {
 
 	@Test
 	public void testInequality() {
-		ArrayList<Integer> otherList = list.clone();
+		ArrayList<Integer> otherList = list.copy();
 		otherList.add(10);
 		assertNotEquals(list, otherList);
 	}

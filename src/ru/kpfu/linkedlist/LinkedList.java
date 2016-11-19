@@ -4,7 +4,7 @@ import ru.kpfu.collection.Collection;
 import ru.kpfu.list.Iterator;
 import ru.kpfu.list.List;
 
-public class LinkedList<T> implements List<T>, Cloneable {
+public class LinkedList<T> implements List<T> {
 
 	private Node<T> firstNode;
 
@@ -37,10 +37,10 @@ public class LinkedList<T> implements List<T>, Cloneable {
 			firstNode.setPrevious(node);
 		}
 		firstNode = node;
-		size++;
-		if (size == 1) {
+		if (lastNode == null) {
 			lastNode = node;
 		}
+		size++;
 	}
 
 	private void remove(Node<T> node) {
@@ -71,10 +71,10 @@ public class LinkedList<T> implements List<T>, Cloneable {
 			lastNode.setNext(node);
 		}
 		lastNode = node;
-		size++;
-		if (size == 1) {
+		if (firstNode == null) {
 			firstNode = node;
 		}
+		size++;
 	}
 
 	public void removeLast() {
@@ -93,16 +93,16 @@ public class LinkedList<T> implements List<T>, Cloneable {
 	}
 
 	public Iterator<T> getIterator() {
-		return new ListIterator<T>(firstNode);
+		return new ListIterator<>(firstNode);
 	}
 
-	@Override
-	public LinkedList<T> clone() {
+	public LinkedList<T> copy() {
 		LinkedList<T> list = new LinkedList<>();
 		list.addAll(this);
 		return list;
 	}
 
+	@Override
 	public boolean equals(Object o) {
 		if (o != null && o instanceof LinkedList) {
 			LinkedList<?> list = (LinkedList<?>) o;
@@ -156,22 +156,21 @@ public class LinkedList<T> implements List<T>, Cloneable {
 	}
 
 	@Override
-	public void add(T t) {
-		addFirst(t);
+	public boolean add(T t) {
+		addLast(t);
+		return true;
 
 	}
 
 	@Override
 	public void remove() {
-		removeFirst();
+		removeLast();
 
 	}
 
 	@Override
 	public T get(int i) {
-		if (i < 0 || i >= size) {
-			throw new IllegalArgumentException("Index " + i + " is out of bounds");
-		}
+		checkRange(i);
 		if (i == 0) {
 			return getFirst();
 		} else if (i == size - 1) {
@@ -179,9 +178,11 @@ public class LinkedList<T> implements List<T>, Cloneable {
 		}
 		int counter = 0;
 		Iterator<T> iterator = this.getIterator();
+		T tempValue;
 		while (iterator.hasNext()) {
+			tempValue = iterator.next();
 			if (counter == i) {
-				return iterator.next();
+				return tempValue;
 			}
 			counter++;
 		}
@@ -191,9 +192,7 @@ public class LinkedList<T> implements List<T>, Cloneable {
 
 	@Override
 	public void removeByIndex(int i) {
-		if (i < 0 || i >= size) {
-			throw new IllegalArgumentException("Index " + i + " is out of bounds");
-		}
+		checkRange(i);
 		if (i == 0) {
 			removeFirst();
 		} else if (i == size - 1) {
@@ -211,6 +210,12 @@ public class LinkedList<T> implements List<T>, Cloneable {
 			}
 		}
 
+	}
+
+	private void checkRange(int i) {
+		if (i < 0 || i >= size) {
+			throw new IllegalArgumentException("Index " + i + " is out of bounds");
+		}
 	}
 
 	@Override

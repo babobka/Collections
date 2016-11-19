@@ -1,4 +1,4 @@
-package ru.kpfu.hash;
+package ru.kpfu.collection;
 
 public class GenericArray<T> {
 
@@ -19,5 +19,15 @@ public class GenericArray<T> {
 	public void set(int i, T t) {
 		array[i] = t;
 	}
+	
+	public void swap(int i1, int i2) {
+		if (i1 != i2) {
+			Object temp = array[i1];
+			array[i1] = array[i2];
+			array[i2] = temp;
+		}
+	}
+	
+	
 
 }

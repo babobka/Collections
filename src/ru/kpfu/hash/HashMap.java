@@ -1,5 +1,6 @@
 package ru.kpfu.hash;
 
+import ru.kpfu.collection.GenericArray;
 import ru.kpfu.linkedlist.LinkedList;
 import ru.kpfu.list.Iterator;
 import ru.kpfu.list.List;

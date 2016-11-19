@@ -13,7 +13,7 @@ public class LinkedListTest {
 
 	private LinkedList<Integer> list;
 
-	int n = 1000000;
+	int n = 10000;
 
 	@Before
 	public void init() {
@@ -42,6 +42,11 @@ public class LinkedListTest {
 		assertEquals(list.getSize(), 2);
 		assertNotEquals(list.getFirst(), list.getLast());
 		assertTrue(list.getFirst().equals(first) && list.getLast().equals(last));
+		list.clear();
+		for (int i = 0; i < n; i++) {
+			list.addLast(i);
+		}
+		assertEquals(list.get(n-2), (Integer)(n - 2));
 	}
 
 	@Test
@@ -112,7 +117,7 @@ public class LinkedListTest {
 	}
 
 	@Test
-	public void tesGet() {
+	public void testGet() {
 		for (int i = 0; i < n; i++) {
 			list.add(i);
 		}
@@ -130,7 +135,7 @@ public class LinkedListTest {
 
 	@Test
 	public void testInequality() {
-		LinkedList<Integer> otherList = list.clone();
+		LinkedList<Integer> otherList = list.copy();
 		otherList.addFirst(10);
 		assertNotEquals(list, otherList);
 	}

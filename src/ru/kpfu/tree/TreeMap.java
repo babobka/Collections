@@ -188,7 +188,7 @@ public class TreeMap<K extends Comparable<K>, V> implements Map<K, V> {
 		List<Entry<K, V>> entriesList = this.getEntries();
 		Iterator<Entry<K, V>> iterator = entriesList.getIterator();
 		while (iterator.hasNext()) {
-			list.addLast(iterator.next().getKey());
+			list.addFirst(iterator.next().getKey());
 		}
 		return list;
 

@@ -4,8 +4,6 @@ import ru.kpfu.collection.Collection;
 
 public interface List<T> extends Collection<T> {
 
-	public void add(T t);
-
 	public void remove();
 
 	public void removeByIndex(int i);

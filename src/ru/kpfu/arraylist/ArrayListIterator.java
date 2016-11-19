@@ -1,16 +1,17 @@
 package ru.kpfu.arraylist;
 
+import ru.kpfu.collection.GenericArray;
 import ru.kpfu.list.Iterator;
 
 public class ArrayListIterator<T> implements Iterator<T> {
 
 	private int currentIndex;
 
-	private Object[] array;
+	private GenericArray<T> array;
 
 	private int size;
 
-	public ArrayListIterator(Object[] array, int currentIndex, int size) {
+	public ArrayListIterator(GenericArray<T> array, int currentIndex, int size) {
 		this.currentIndex = currentIndex;
 		this.size = size;
 		this.array = array;
@@ -18,7 +19,7 @@ public class ArrayListIterator<T> implements Iterator<T> {
 
 	@Override
 	public T next() {
-		T value = (T)array[currentIndex];
+		T value = array.get(currentIndex);
 		currentIndex++;
 		return value;
 	}

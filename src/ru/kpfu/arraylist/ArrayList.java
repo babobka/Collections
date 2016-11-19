@@ -1,51 +1,45 @@
 package ru.kpfu.arraylist;
 
-import java.util.Arrays;
-
 import ru.kpfu.collection.Collection;
+import ru.kpfu.collection.GenericArray;
 import ru.kpfu.list.Iterator;
 import ru.kpfu.list.List;
 
-public class ArrayList<T> implements List<T>, Cloneable {
+public class ArrayList<T> implements List<T> {
 
 	private static final int MIN_SIZE = 10;
 
 	private static final double EXPAND_COEFFICIENT = 1.5;
 
-	private Object[] array = new Object[MIN_SIZE];
+	private GenericArray<T> array = new GenericArray<>(MIN_SIZE);
 
-	private int size = 0;
+	private int size;
 
-	public void add(T element) {
-		if (size == array.length - 1) {
+	public boolean add(T element) {
+		if (size == array.getSize() - 1) {
 			expandArray();
 		}
-		array[size] = element;
-		size++;
+		array.set(size++, element);
+		return true;
 	}
 
 	public void removeByIndex(int i) {
-		if (i < 0 || i > size) {
-			throw new IllegalArgumentException("Index " + i + " is out of bounds");
-		}
+		checkRange(i);
 		for (int j = i; j < size - 1; j++) {
-			array[j] = array[j + 1];
+			array.set(j, array.get(j + 1));
 		}
-		array[size - 1] = null;
-		size--;
+		array.set(size--, null);
 	}
 
 	public void set(int i, T value) {
 		if (i < size) {
-			array[i] = value;
+			array.set(i, value);
 		}
 	}
 
 	public T get(int i) {
-		if (i < 0 || i > size) {
-			throw new IllegalArgumentException("Index " + i + " is out of bounds");
-		}
-		return (T) array[i];
+		checkRange(i);
+		return array.get(i);
 	}
 
 	public Iterator<T> getIterator() {
@@ -53,16 +47,16 @@ public class ArrayList<T> implements List<T>, Cloneable {
 	}
 
 	private void expandArray() {
-		expandArray((int) (array.length * EXPAND_COEFFICIENT));
+		expandArray((int) (array.getSize() * EXPAND_COEFFICIENT));
 	}
 
 	private void expandArray(int size) {
 		if (size < this.size) {
 			throw new IllegalArgumentException("New size can not be lower than current size");
 		}
-		Object[] newArray = new Object[size];
+		GenericArray<T> newArray = new GenericArray<>(size);
 		for (int i = 0; i < this.size; i++) {
-			newArray[i] = array[i];
+			newArray.set(i, array.get(i));
 		}
 		array = newArray;
 	}
@@ -77,9 +71,10 @@ public class ArrayList<T> implements List<T>, Cloneable {
 
 	public void clear() {
 		this.size = 0;
-		this.array = new Object[MIN_SIZE];
+		this.array = new GenericArray<>(MIN_SIZE);
 	}
 
+	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
 		String separator = "";
@@ -106,38 +101,13 @@ public class ArrayList<T> implements List<T>, Cloneable {
 		return null;
 	}
 
-	public ArrayList<T> clone() {
+	public ArrayList<T> copy() {
 		ArrayList<T> list = new ArrayList<>();
 		Iterator<T> iterator = this.getIterator();
 		while (iterator.hasNext()) {
 			list.add(iterator.next());
 		}
 		return list;
-	}
-
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + Arrays.hashCode(array);
-		result = prime * result + size;
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		ArrayList<?> other = (ArrayList<?>) obj;
-		if (!Arrays.equals(array, other.array))
-			return false;
-		if (size != other.size)
-			return false;
-		return true;
 	}
 
 	@Override
@@ -160,7 +130,7 @@ public class ArrayList<T> implements List<T>, Cloneable {
 	@Override
 	public boolean remove(T value) {
 		for (int i = 0; i < size; i++) {
-			if (array[i].equals(value)) {
+			if (array.get(i).equals(value)) {
 				removeByIndex(i);
 				return true;
 			}
@@ -171,7 +141,7 @@ public class ArrayList<T> implements List<T>, Cloneable {
 	@Override
 	public boolean contains(T value) {
 		for (int i = 0; i < size; i++) {
-			if (array[i].equals(value)) {
+			if (array.get(i).equals(value)) {
 				return true;
 			}
 		}
@@ -181,16 +151,15 @@ public class ArrayList<T> implements List<T>, Cloneable {
 	public void shuffle() {
 		int n = size / 2;
 		for (int i = 0; i < n; i++) {
-			swap(array, i, (int) (Math.random() * size));
+			array.swap(i, (int) (Math.random() * size));
 		}
 	}
 
-	private void swap(Object[] array, int i1, int i2) {
-		if (i1 != i2) {
-			Object temp = array[i1];
-			array[i1] = array[i2];
-			array[i2] = temp;
+	private void checkRange(int i) {
+		if (i < 0 || i > size) {
+			throw new IllegalArgumentException("Index " + i + " is out of bounds");
 		}
+
 	}
 
 }

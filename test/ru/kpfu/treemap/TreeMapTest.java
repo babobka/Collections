@@ -170,7 +170,6 @@ public class TreeMapTest {
 			map.put((int) (Math.random() * n), "abc");
 		}
 		List<Integer> keysList = map.getKeys();
-		System.out.println(keysList);
 		assertTrue(isListSorted(keysList));
 
 	}
@@ -182,6 +181,7 @@ public class TreeMapTest {
 			current = iterator.next();
 			if (previous != null) {
 				if (current < previous) {
+					
 					return false;
 				}
 			}
