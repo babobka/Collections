@@ -54,14 +54,14 @@ public class TreeMapTest {
 		for (int i = 0; i < n; i++) {
 			map.put(list.get(i), "abc");
 		}
-		
+
 		assertEquals(map.getSize(), n);
 		assertEquals(map.getSize(), map.getKeys().getSize());
 	}
-	
+
 	@Test
 	public void testPutTheSame() {
-		
+
 		for (int i = 0; i < n; i++) {
 			map.put(0, "abc");
 		}
@@ -165,6 +165,49 @@ public class TreeMapTest {
 	}
 
 	@Test
+	public void testRemoveALot() {
+		ArrayList<Integer> list = new ArrayList<>();
+		for (int i = 0; i < n; i++) {
+			list.add(i);
+		}
+		list.shuffle();
+		for (int i = 0; i < n; i++) {
+			map.put(list.get(i), "abc");
+		}
+
+		for (int i = 0; i < n; i++) {
+			map.remove(list.get(i));
+		}
+
+		assertEquals(map.getSize(), 0);
+		assertEquals(map.getSize(),map.getKeys().getSize());
+
+	}
+	
+	
+	@Test
+	public void testRemoveHalf() {
+		int half=n/2;
+		ArrayList<Integer> list = new ArrayList<>();
+		for (int i = 0; i < n; i++) {
+			list.add(i);
+		}
+		list.shuffle();
+		for (int i = 0; i < n; i++) {
+			map.put(list.get(i), "abc");
+		}
+
+		for (int i = 0; i < half; i++) {
+			map.remove(list.get(i));
+		}
+		assertTrue(isListSorted(map.getKeys()));
+		assertEquals(map.getSize(), half);
+		assertEquals(map.getSize(),map.getKeys().getSize());
+
+	}
+
+
+	@Test
 	public void testSorted() {
 		for (int i = 0; i < n; i++) {
 			map.put((int) (Math.random() * n), "abc");
@@ -181,7 +224,7 @@ public class TreeMapTest {
 			current = iterator.next();
 			if (previous != null) {
 				if (current < previous) {
-					
+
 					return false;
 				}
 			}

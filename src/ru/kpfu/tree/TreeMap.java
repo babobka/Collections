@@ -130,6 +130,8 @@ public class TreeMap<K extends Comparable<K>, V> implements Map<K, V> {
 						successorNode.getRightNode().setParentNode(successorNode.getParentNode());
 						successorNode.getParentNode().setLeftNode(successorNode.getRightNode());
 					}
+					successorNode.setRightNode(nodeItem.getRightNode());
+					nodeItem.getRightNode().setParentNode(successorNode);
 				}
 
 				NodeItem<K, V> parentNode = nodeItem.getParentNode();
@@ -146,11 +148,7 @@ public class TreeMap<K extends Comparable<K>, V> implements Map<K, V> {
 				}
 
 				successorNode.setLeftNode(nodeItem.getLeftNode());
-				nodeItem.getLeftNode().setParentNode(successorNode);
-				if (successorNode != nodeItem.getRightNode()) {
-					successorNode.setRightNode(nodeItem.getRightNode());
-					nodeItem.getRightNode().setParentNode(successorNode);
-				}
+				nodeItem.getLeftNode().setParentNode(successorNode);	
 			}
 
 		}
